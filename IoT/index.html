@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-lg text-center">
+        <h2 class="text-2xl font-semibold mb-4">Welcome to Morse Code Game</h2>
+        
+        <!-- Registration -->
+        <div id="registration">
+            <input type="text" id="username" placeholder="Enter your username" class="w-full p-2 mb-4 rounded bg-gray-700 text-white">
+            <button id="startButton" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Start</button>
+        </div>
+        
+        <!-- Game Mode Selection -->
+        <div id="gameModes" class="hidden">
+            <h3 class="text-xl font-semibold mb-2">Select Game Mode</h3>
+            <button onclick="startGame('memory')" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mb-2">Memory Mode</button>
+            <button onclick="startGame('riddle')" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded">Morse Riddle Game</button>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" class="hidden">
+            <h3 class="text-xl font-semibold mb-2">Game in Progress</h3>
+            <p class="mb-1"><strong>Level:</strong> <span id="level">1</span></p>
+            <p class="mb-1"><strong>Score:</strong> <span id="score">0</span></p>
+            <p class="mb-1"><strong>Attempts Left:</strong> <span id="attempts">5</span></p>
+            <p id="hint" class="hidden text-gray-400 mb-4">Hint will fade out...</p>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="sendInput('dot')" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Dot</button>
+                <button onclick="sendInput('dash')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Dash</button>
+                <button onclick="sendInput('enter')" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Enter</button>
+                <button onclick="sendInput('submit')" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+            </div>
+
+            <!-- Leaderboard -->
+            <div id="leaderboard" class="hidden mt-6">
+                <h3 class="text-xl font-semibold mb-2">Leaderboard</h3>
+                <ul id="leaderboardList" class="text-left"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
