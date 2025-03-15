@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let currentUsername = "";
+    let currentUsername = localStorage.getItem("username") || "";
 
     document.getElementById("startButton").addEventListener("click", registerUser);
     
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
             if (data.message === "User Registered") {
-                currentUsername = username;
+                localStorage.setItem("username", username);  // Store username in localStorage
                 document.getElementById("registration").classList.add("hidden");
                 document.getElementById("gameModes").classList.remove("hidden");
             } else {
@@ -32,18 +32,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startGame(mode) {
-        fetch("/start_game", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ mode: mode, username: currentUsername })
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("gameModes").classList.add("hidden");
-            document.getElementById("gameArea").classList.remove("hidden");
-            updateGameUI(data);
-        })
-        .catch(error => console.error("Error starting game:", error));
+        let storedUsername = localStorage.getItem("username");
+        if (!storedUsername) {
+            alert("Session expired. Please log in again.");
+            window.location.reload();
+            return;
+        }
+
+        if (mode === "memory") {
+            window.location.href = "game1.html";
+        } else if (mode === "riddle") {
+            window.location.href = "game2.html";
+        }
     }
 
     function sendInput(input) {
@@ -93,5 +93,28 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error("Error fetching game data:", error));
     }
 
+    // Score display function
+    function fetchAllScores() {
+        fetch('/get_all_scores')
+        .then(response => response.json())
+        .then(data => {
+            let scoresList = document.getElementById('allScoresList');
+            scoresList.innerHTML = "";
+    
+            data.forEach(entry => {
+                let listItem = document.createElement('li');
+                listItem.innerText = `${entry.username}: ${entry.score}`;
+                scoresList.appendChild(listItem);
+            });
+    
+            document.getElementById('scoresModal').classList.remove('hidden');
+        })
+        .catch(error => console.error("Error fetching all scores:", error));
+    }
+    
+    function closeScoresModal() {
+        document.getElementById('scoresModal').classList.add('hidden');
+    }
+    
     setInterval(fetchGameData, 2000);
 });

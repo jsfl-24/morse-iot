@@ -2,14 +2,30 @@ import network
 import socket
 import ujson as json
 import os
+from microdot import Microdot, Response
 
 # WiFi Configuration
 SSID = "Asianet"
 PASSWORD = "04042012"
 
-# JSON File
-USERDATA_FILE = "userdatas.json"
+# JSON File Paths
+USERDATA_FILE = "userdata.json"
+RIDDLES_FILE = "riddles.json"
 
+# Web Server Initialization
+app = Microdot()
+Response.default_content_type = 'application/json'
+
+# Game State Variables
+game_state = {
+    "level": 1,
+    "score": 0,
+    "attempts": 5,
+    "current_answer": "",
+    "current_morse": ""
+}
+
+# Connect to WiFi
 def connect_wifi():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
@@ -20,72 +36,146 @@ def connect_wifi():
             pass
     print("Connected! IP:", wlan.ifconfig()[0])
 
-def load_file(filename):
-    """Reads a file from ESP32 storage."""
+# Load JSON Data
+def load_json(filename):
     try:
         with open(filename, "r") as file:
-            return file.read()
-    except:
-        return "File Not Found"
+            return json.load(file)
+    except Exception as e:
+        print(f"Error loading {filename}:", e)
+        return {}
 
-def read_userdata():
-    """Loads user data from JSON file or returns an empty dictionary."""
-    if USERDATA_FILE in os.listdir():
-        try:
-            with open(USERDATA_FILE, "r") as file:
-                return json.load(file)
-        except:
-            return {}  # Return empty dict if file is corrupted
-    return {}
+# Load Riddles
+riddles_data = load_json(RIDDLES_FILE)
 
-def save_userdata(userdata):
-    """Saves user data to JSON file."""
-    with open(USERDATA_FILE, "w") as file:
-        json.dump(userdata, file)
+# Fetch Current Riddle
+def get_riddle(level):
+    level_key = f"level{level}"
+    if level_key in riddles_data and riddles_data[level_key]:
+        riddle = riddles_data[level_key][0]  # Get first riddle of the level
+        game_state["current_answer"] = riddle["answer"]
+        game_state["current_morse"] = riddle["morse"]
+        return {"riddle": riddle["riddle"], "answer": riddle["answer"], "morse": riddle["morse"]}
+    return {"riddle": "No more riddles!", "answer": "", "morse": ""}
 
-def register_user(request):
-    """Handles user registration and stores username in JSON file."""
+# Validate Morse Code Input
+def check_morse_code(input_morse):
+    if input_morse == game_state["current_morse"]:
+        game_state["score"] += 10
+        game_state["level"] += 1
+        game_state["attempts"] = 5
+        message = "✅ Correct! Level Up!"
+        success = True
+    else:
+        game_state["score"] -= 5
+        game_state["attempts"] -= 1
+        message = "❌ Incorrect! Try again!"
+        success = False
+
+    if game_state["attempts"] == 0:
+        message = "💀 Game Over! Restarting..."
+        game_state["level"] = 1
+        game_state["score"] = 0
+        game_state["attempts"] = 5
+
+    next_riddle = get_riddle(game_state["level"])
+    return {
+        "message": message,
+        "success": success,
+        "level": game_state["level"],
+        "score": game_state["score"],
+        "attempts": game_state["attempts"],
+        "riddle": next_riddle["riddle"],
+        "answer": next_riddle["answer"],
+        "morse": next_riddle["morse"]
+    }
+
+# Serve `index.html`
+@app.route('/')
+def serve_index(request):
     try:
-        content = request.split("\r\n\r\n")[-1]  # Extract JSON payload
-        user_data = json.loads(content)
-        username = user_data.get("username", "").strip().upper()
+        with open("index.html", "r") as file:
+            return Response(file.read(), headers={"Content-Type": "text/html"})
+    except:
+        return Response("Error loading index.html", status=500)
+
+# Serve `game1.html`
+@app.route('/game1.html')
+def serve_game1(request):
+    try:
+        with open("game1.html", "r") as file:
+            return Response(file.read(), headers={"Content-Type": "text/html"})
+    except:
+        return Response("Error loading game1.html", status=500)
+
+# Serve `script.js`
+@app.route('/script.js')
+def serve_script(request):
+    try:
+        with open("script.js", "r") as file:
+            return Response(file.read(), headers={"Content-Type": "application/javascript"})
+    except:
+        return Response("Error loading script.js", status=500)
+
+# Serve `game1.js`
+@app.route('/game1.js')
+def serve_game1_js(request):
+    try:
+        with open("game1.js", "r") as file:
+            return Response(file.read(), headers={"Content-Type": "application/javascript"})
+    except:
+        return Response("Error loading game1.js", status=500)
+
+# Handle User Registration
+@app.route('/register', methods=['POST'])
+def register_user(request):
+    try:
+        data = request.json
+        username = data.get("username", "").strip().upper()
 
         if not username:
-            return "HTTP/1.1 400 Bad Request\n\n{\"error\": \"Invalid Username\"}"
+            return Response(json.dumps({"error": "Invalid Username"}), status=400)
 
-        userdata = read_userdata()
+        userdata = load_json(USERDATA_FILE)
         if username not in userdata:
-            userdata[username] = {"memory_mode": 0, "riddle_mode": 0}  # Initialize scores
+            userdata[username] = {"memory_mode": 0, "riddle_mode": 0}
 
-        save_userdata(userdata)
-        return "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"message\": \"User Registered\"}"
+        with open(USERDATA_FILE, "w") as file:
+            json.dump(userdata, file)
+
+        return Response(json.dumps({"message": "User Registered"}))
     except:
-        return "HTTP/1.1 500 Internal Server Error\n\n{\"error\": \"Failed to process request\"}"
+        return Response(json.dumps({"error": "Failed to process request"}), status=500)
 
-def serve_file(request):
-    """Serves requested files or handles API endpoints."""
-    if "GET /script.js" in request:
-        return "HTTP/1.1 200 OK\nContent-Type: application/javascript\n\n" + load_file("script.js")
-    elif "POST /register" in request:
-        return register_user(request)
-    else:  # Default to index.html
-        return "HTTP/1.1 200 OK\nContent-Type: text/html\n\n" + load_file("index.html")
+# Fetch All Scores (Sorted)
+@app.route('/get_all_scores')
+def get_all_scores(request):
+    userdata = load_json(USERDATA_FILE)
+    scores_list = [{"username": user, "score": data["memory_mode"]} for user, data in userdata.items()]
+    scores_list.sort(key=lambda x: x["score"])  # Sort by score (ascending)
+    return Response(json.dumps(scores_list))
 
-def start_web_server():
-    """Starts a simple web server on ESP32."""
-    addr = ("", 80)
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(addr)
-    s.listen(5)
-    print("Web server started on port 80")
+# Provide Riddle Data
+@app.route('/get_riddle')
+def serve_riddle(request):
+    level = int(request.args.get("level", 1))
+    return Response(json.dumps(get_riddle(level)))
 
-    while True:
-        conn, addr = s.accept()
-        request = conn.recv(1024).decode()
-        response = serve_file(request)
-        conn.send(response)
-        conn.close()
+# Handle Morse Code Input
+@app.route('/check_morse', methods=['POST'])
+def process_morse(request):
+    try:
+        data = request.json
+        user_morse = data.get("morse", "").strip()
+        return Response(json.dumps(check_morse_code(user_morse)))
+    except:
+        return Response(json.dumps({"message": "Error processing request", "success": False}))
 
-# Run everything
+# Start Server
+def start_server():
+    print("Starting Web Server on ESP32...")
+    app.run(port=80)
+
+# Run Everything
 connect_wifi()
-start_web_server()
+start_server()

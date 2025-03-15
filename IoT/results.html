@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-3xl p-6 bg-gray-800 rounded-lg shadow-lg text-center">
+        
+        <!-- Username Display -->
+        <div id="usernameDisplay" class="bg-blue-600 text-white px-4 py-2 rounded-full mb-4 text-lg font-semibold">
+            Player: <span id="username">Loading...</span>
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-6">Game Results</h2>
+
+        <!-- Memory Mode Leaderboard -->
+        <h3 class="text-xl font-semibold mb-2 text-green-400">Memory Mode Leaderboard</h3>
+        <table class="w-full mb-6 border-collapse border border-gray-600">
+            <thead>
+                <tr class="bg-gray-700">
+                    <th class="border border-gray-600 px-4 py-2">Rank</th>
+                    <th class="border border-gray-600 px-4 py-2">Username</th>
+                    <th class="border border-gray-600 px-4 py-2">Game Score</th>
+                </tr>
+            </thead>
+            <tbody id="memoryLeaderboard"></tbody>
+        </table>
+
+        <!-- Morse Riddle Game Leaderboard -->
+        <h3 class="text-xl font-semibold mb-2 text-purple-400">Morse Riddle Game Leaderboard</h3>
+        <table class="w-full mb-6 border-collapse border border-gray-600">
+            <thead>
+                <tr class="bg-gray-700">
+                    <th class="border border-gray-600 px-4 py-2">Rank</th>
+                    <th class="border border-gray-600 px-4 py-2">Username</th>
+                    <th class="border border-gray-600 px-4 py-2">Game Score</th>
+                </tr>
+            </thead>
+            <tbody id="riddleLeaderboard"></tbody>
+        </table>
+
+        <!-- Play Again Button -->
+        <button onclick="playAgain()" class="mt-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded">
+            Play Again
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let username = localStorage.getItem("username");
+            if (!username) {
+                alert("Session expired. Redirecting to login...");
+                window.location.href = "index.html"; // Redirect to main menu
+            } else {
+                document.getElementById("username").innerText = username; // Display username
+            }
+            fetchLeaderboard();
+        });
+
+        function fetchLeaderboard() {
+            fetch('/get_all_scores')
+            .then(response => response.json())
+            .then(data => {
+                let memoryBoard = document.getElementById("memoryLeaderboard");
+                let riddleBoard = document.getElementById("riddleLeaderboard");
+                memoryBoard.innerHTML = "";
+                riddleBoard.innerHTML = "";
+
+                let memoryScores = data.filter(entry => entry.game === "memory");
+                let riddleScores = data.filter(entry => entry.game === "riddle");
+
+                populateTable(memoryBoard, memoryScores);
+                populateTable(riddleBoard, riddleScores);
+            })
+            .catch(error => console.error("Error fetching leaderboard:", error));
+        }
+
+        function populateTable(tableElement, scores) {
+            scores.sort((a, b) => a.score - b.score); // Sort by increasing score
+            scores.forEach((entry, index) => {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="border border-gray-600 px-4 py-2">${index + 1}</td>
+                    <td class="border border-gray-600 px-4 py-2">${entry.username}</td>
+                    <td class="border border-gray-600 px-4 py-2">${entry.score}</td>
+                `;
+                tableElement.appendChild(row);
+            });
+        }
+
+        function playAgain() {
+            window.location.href = "index.html"; // Redirect to main menu
+        }
+    </script>
+</body>
+</html>
