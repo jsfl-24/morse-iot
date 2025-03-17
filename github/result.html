@@ -1,0 +1,27 @@
+@app.route('/api/leaderboard')
+def get_leaderboard(request):
+    filename = "userdata.json"
+
+    if file_exists(filename):
+        with open(filename, "r") as f:
+            try:
+                users = ujson.load(f)
+                leaderboard = [
+                    {
+                        "username": username,
+                        "memory_mode": scores.get("memory_mode", 0),
+                        "riddle_mode": scores.get("riddle_mode", 0),
+                        "cse_mode": scores.get("cse_mode", 0)
+                    }
+                    for username, scores in users.items()
+                ]
+
+                # Sort by highest memory_mode score
+                leaderboard.sort(key=lambda x: x["memory_mode"], reverse=True)
+
+                return Response(ujson.dumps(leaderboard), headers={"Content-Type": "application/json"})
+            except ValueError:
+                pass 
+
+    return Response(ujson.dumps([]), headers={"Content-Type": "application/json"})
+
