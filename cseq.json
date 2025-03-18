@@ -1,0 +1,302 @@
+[
+  {
+      "level": 1,
+      "morse": "_._./._../._/.../...",
+      "answer": "CLASS",
+      "hint": "What is the basic unit of encapsulation in OOP?"
+  },
+  {
+      "level": 1,
+      "morse": ".._./../_./._/._..",
+      "answer": "FINAL",
+      "hint": "Which keyword is used to define a constant in Java?"
+  },
+  {
+      "level": 1,
+      "morse": "._../___/__./_.",
+      "answer": "LOGN",
+      "hint": "What is the time complexity of binary search in a sorted array?"
+  },
+  {
+      "level": 1,
+      "morse": "__/._/._../._../___/_._.",
+      "answer": "MALLOC",
+      "hint": "Which function is used to allocate memory dynamically in C?"
+  },
+  {
+      "level": 1,
+      "morse": ".__._/_.__",
+      "answer": "PY",
+      "hint": "What is the extension of a Python source code file?"
+  },
+  {
+      "level": 1,
+      "morse": "..././._.././_._./_",
+      "answer": "SELECT",
+      "hint": "Which SQL command is used to retrieve data from a database?"
+  },
+  {
+      "level": 1,
+      "morse": "_._/./._./_././._..",
+      "answer": "KERNEL",
+      "hint": "What is the core component of an operating system that manages hardware resources?"
+  },
+  {
+      "level": 1,
+      "morse": "._././__./._././.../.../../___/_.",
+      "answer": "REGRESSION",
+      "hint": "Which algorithm is used for supervised learning in AI?"
+  },
+  {
+      "level": 1,
+      "morse": ".--./._././.__._/._./___/_._././.../.../../_./__.",
+      "answer": "PREPROCESSING",
+      "hint": "What is the process of converting raw data into meaningful information called?"
+  },
+  {
+      "level": 1,
+      "morse": "__._/.._/./.._/.",
+      "answer": "QUEUE",
+      "hint": "Which data structure uses FIFO (First In First Out) principle?"
+  },
+  {
+      "level": 2,
+      "morse": "___/..._/./._./._../___/._/../_./__.",
+      "answer": "OVERLOADING",
+      "hint": "What is the process of defining multiple methods with the same name but different parameters called?"
+  },
+  {
+      "level": 2,
+      "morse": "_/..../../...",
+      "answer": "THIS",
+      "hint": "Which Java keyword is used to refer to the current object?"
+  },
+  {
+      "level": 2,
+      "morse": "_.../.._/_.../_.../._.././.../___/._./_",
+      "answer": "BUBBLESORT",
+      "hint": "Which sorting algorithm has the worst-case time complexity of O(n^2)?"
+  },
+  {
+      "level": 2,
+      "morse": "_.././._././.._././._././_./_._./.",
+      "answer": "DEREFERENCE",
+      "hint": "Which operator is used to access the value at a memory address in C?"
+  },
+  {
+      "level": 2,
+      "morse": "._.././_.",
+      "answer": "LEN",
+      "hint": "What is the built-in function used to find the length of a list in Python?"
+  },
+  {
+      "level": 2,
+      "morse": ".._/_./../__._/.._/.",
+      "answer": "UNIQUE",
+      "hint": "Which constraint ensures that all values in a column are unique?"
+  },
+  {
+      "level": 2,
+      "morse": ".../.___/.._.",
+      "answer": "SJF",
+      "hint": "Which scheduling algorithm allocates CPU to the process with the shortest burst time?"
+  },
+  {
+      "level": 2,
+      "morse": "._././../_./.._./___/._./_._././_./_./_",
+      "answer": "REINFORCEMENT",
+      "hint": "Which AI technique is used to make decisions based on rewards and punishments?"
+  },
+  {
+      "level": 2,
+      "morse": "__/._/__/.__./._../___/._/._../../_...",
+      "answer": "MATPLOTLIB",
+      "hint": "Which Python library is commonly used for data visualization in ML?"
+  },
+  {
+      "level": 2,
+      "morse": ".../_/._/_._./_._",
+      "answer": "STACK",
+      "hint": "Which data structure is used to implement recursion?"
+  },
+  {
+      "level": 3,
+      "morse": "../_./...././._./../_/._/_./_._./.",
+      "answer": "INHERITANCE",
+      "hint": "What is the principle of OOP that allows a class to inherit properties from another class?"
+  },
+  {
+      "level": 3,
+      "morse": "._/._./._./._/_.--/._../../.../_",
+      "answer": "ARRAYLIST",
+      "hint": "Which Java collection class implements a dynamic array?"
+  },
+  {
+      "level": 3,
+      "morse": "...././._/.__.",
+      "answer": "HEAP",
+      "hint": "Which data structure is used to implement a priority queue?"
+  },
+  {
+      "level": 3,
+      "morse": ".../_/._./_._./__/.__.",
+      "answer": "STRCMP",
+      "hint": "Which C library function is used to compare two strings?"
+  },
+  {
+      "level": 3,
+      "morse": "_.././.._.",
+      "answer": "DEF",
+      "hint": "What is the keyword used to define a function in Python?"
+  },
+  {
+      "level": 3,
+      "morse": ".____/_./.._.",
+      "answer": "1NF",
+      "hint": "Which normal form ensures that there are no repeating groups in a table?"
+  },
+  {
+      "level": 3,
+      "morse": ".../_._./...././_../.._/._.././._.",
+      "answer": "SCHEDULER",
+      "hint": "Which OS component is responsible for managing processes and threads?"
+  },
+  {
+      "level": 3,
+      "morse": "_.../._/_._./_._/_/._./._/_._./_._/../_./__.",
+      "answer": "BACKTRACKING",
+      "hint": "Which AI algorithm is used for solving constraint satisfaction problems?"
+  },
+  {
+      "level": 3,
+      "morse": "_.././_._./../.../../___/_./_/_/._././.",
+      "answer": "DECISIONTREE",
+      "hint": "Which ML algorithm is used for classification and regression tasks?"
+  },
+  {
+      "level": 3,
+      "morse": "_.../.._./...",
+      "answer": "BFS",
+      "hint": "Which graph traversal algorithm uses a queue?"
+  },
+  {
+      "level": 4,
+      "morse": "./_./_._./._/.__./.../.._/._../._/_/../___/_.",
+      "answer": "ENCAPSULATION",
+      "hint": "What is the term for wrapping data and methods into a single unit in OOP?"
+  },
+  {
+      "level": 4,
+      "morse": ".._./../_./._/._..",
+      "answer": "FINAL",
+      "hint": "Which Java keyword is used to prevent method overriding?"
+  },
+  {
+      "level": 4,
+      "morse": "_../../.___/_._/.../_/._./._",
+      "answer": "DIJKSTRA",
+      "hint": "Which algorithm is used to find the shortest path in a weighted graph?"
+  },
+  {
+      "level": 4,
+      "morse": "_.././.._./../_./.",
+      "answer": "DEFINE",
+      "hint": "Which C keyword is used to define a macro?"
+  },
+  {
+      "level": 4,
+      "morse": ".../_/._/_/../_._./__/./_/..../___/_..",
+      "answer": "STATICMETHOD",
+      "hint": "What is the Python decorator used to define a static method?"
+  },
+  {
+      "level": 4,
+      "morse": "_../._./___/.__.",
+      "answer": "DROP",
+      "hint": "Which SQL command is used to remove a table from a database?"
+  },
+  {
+      "level": 4,
+      "morse": "_.../._/_./_._/./._./...",
+      "answer": "BANKERS",
+      "hint": "Which OS algorithm is used to prevent deadlocks?"
+  },
+  {
+      "level": 4,
+      "morse": "_././.._/._./._/._../_././_/__/___/._./_._",
+      "answer": "NEURALNETWORK",
+      "hint": "Which AI technique is used to mimic human decision-making?"
+  },
+  {
+      "level": 4,
+      "morse": "._././__./.._/._../._/._./../__../._/_/../___/_.",
+      "answer": "REGULARIZATION",
+      "hint": "Which ML technique is used to reduce overfitting in models?"
+  },
+  {
+      "level": 4,
+      "morse": "..../._/.../..../_/._/_.../._../.",
+      "answer": "HASHTABLE",
+      "hint": "Which data structure is used to implement a dictionary in Python?"
+  },
+  {
+      "level": 5,
+      "morse": "___/..._/./._./._./../_./../_./__.",
+      "answer": "OVERRIDING",
+      "hint": "What is the term for creating multiple methods with the same name in a class hierarchy?"
+  },
+  {
+      "level": 5,
+      "morse": "__/.._/._../_/../.__./._/._.././../_./...././._./../_/._/_./_._./.",
+      "answer": "MULTIPLE_INHERITANCE",
+      "hint": "Which Java feature allows a class to implement multiple interfaces?"
+  },
+  {
+      "level": 5,
+      "morse": "_../.._./...",
+      "answer": "DFS",
+      "hint": "Which algorithm is used to detect cycles in a directed graph?"
+  },
+  {
+      "level": 5,
+      "morse": ".._./_._./._../___/.../.",
+      "answer": "FCLOSE",
+      "hint": "Which C function is used to close a file?"
+  },
+  {
+      "level": 5,
+      "morse": "_./.._/__/.__./_.__",
+      "answer": "NUMPY",
+      "hint": "What is the Python library used for numerical computations?"
+  },
+  {
+      "level": 5,
+      "morse": "._/._../_/./._.",
+      "answer": "ALTER",
+      "hint": "Which SQL command is used to add a new column to a table?"
+  },
+  {
+      "level": 5,
+      "morse": "..._/../._./_/.._/._/._../__/./--/---/._./-.--",
+      "answer": "VIRTUALMEMORY",
+      "hint": "Which OS concept allows multiple processes to share the same memory space?"
+  },
+  {
+      "level": 5,
+      "morse": "._/.../_/._/._.",
+      "answer": "A_STAR",
+      "hint": "Which AI technique is used to find the optimal solution in a search space?"
+  },
+  {
+      "level": 5,
+      "morse": "_._/__/./._/_./...",
+      "answer": "KMEANS",
+      "hint": "Which ML algorithm is used for clustering data points?"
+  },
+  {
+      "level": 5,
+      "morse": "._/..._/._..",
+      "answer": "AVL",
+      "hint": "Which data structure is used to implement a balanced binary search tree?"
+  }
+]

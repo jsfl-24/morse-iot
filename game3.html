@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Quiz Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; letter-spacing: 1px; }
+    </style>
+</head>
+<body class="bg-black text-white flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-2xl p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col items-center">
+        
+        <!-- Username Display -->
+        <div id="usernameDisplay" class="bg-gray-700 text-white px-4 py-2 rounded-lg mb-4 text-lg font-semibold">
+            Player: <span id="username">Loading...</span>
+        </div>
+
+        <div class="flex w-full">
+            <!-- Hint Section -->
+            <div class="w-full p-4 bg-gray-700 rounded-lg text-center">
+                <h3 class="text-lg font-semibold">Quiz Question</h3>
+                <p id="hint" class="text-yellow-400 mt-2">Loading question...</p>
+            </div>
+        </div>
+
+        <!-- Game Section -->
+        <div class="text-center mt-6">
+            <h2 class="text-2xl font-semibold mb-4">CSE Quiz Game</h2>
+
+            <!-- Morse Code Input Buttons -->
+            <div class="flex justify-center space-x-4 mb-4">
+                <button onclick="addMorse('.')" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Dot (.)</button>
+                <button onclick="addMorse('_')" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Dash (_)</button>
+                <button onclick="addMorse('/')" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Space</button>
+                <button onclick="clearMorse()" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Clear</button>
+            </div>
+
+            <!-- Display Entered Morse Code -->
+            <p class="text-lg text-yellow-400 font-semibold mb-2">Your Input:</p>
+            <p id="morseInputDisplay" class="text-xl bg-gray-700 text-white px-4 py-2 rounded-lg"> </p>
+
+            <!-- Submit & Quit Buttons -->
+            <div class="flex justify-center space-x-4 mt-4">
+                <button onclick="submitMorseCode()" class="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
+                <button onclick="quitGame()" class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">Quit & Show Results</button>
+            </div>
+
+            <p class="mt-4"><strong>Level:</strong> <span id="level" class="text-yellow-400 text-lg font-bold">1</span></p>
+            <p><strong>Score:</strong> <span id="score">0</span></p>
+            <p><strong>Attempts Left:</strong> <span id="attempts">5</span></p>
+
+            <p id="message" class="mt-4 text-lg"></p>
+        </div>
+    </div>
+
+    <script src="game3.js"></script>
+</body>
+</html>
