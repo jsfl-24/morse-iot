@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Quiz Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; letter-spacing: 1px; }
+    </style>
+</head>
+<body class="bg-black text-white flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-2xl p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col items-center">
+        
+        <!-- ✅ Username Display -->
+        <div id="usernameDisplay" class="bg-gray-700 text-white px-4 py-2 rounded-lg mb-4 text-lg font-semibold">
+            Player: <span id="username">Loading...</span>
+        </div>
+
+        <!-- ✅ Hint Section -->
+        <div class="w-full p-4 bg-gray-700 rounded-lg text-center">
+            <h3 class="text-lg font-semibold">CSE Quiz Hint</h3>
+            <p id="hint" class="text-yellow-400 mt-2">Loading hint...</p>
+        </div>
+
+        <!-- ✅ Game Section -->
+        <div class="text-center mt-6">
+            <h2 class="text-2xl font-semibold mb-4">CSE Quiz Game</h2>
+
+            <!-- ✅ Morse Code Input Buttons -->
+            <div class="flex justify-center space-x-4 mb-4">
+                <button onclick="addMorse('.')" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Dot (.)</button>
+                <button onclick="addMorse('_')" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Dash (_)</button>
+                <button onclick="addMorse('/')" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Space</button>
+                <button onclick="clearMorse()" class="bg-gray-600 hover:bg-gray-500 text-white py-2 px-4 rounded">Clear</button>
+            </div>
+
+            <!-- ✅ Display Entered Morse Code -->
+            <p class="text-lg text-yellow-400 font-semibold mb-2">Your Morse Input:</p>
+            <p id="morseInputDisplay" class="text-xl bg-gray-700 text-white px-4 py-2 rounded-lg"> </p>
+
+            <!-- ✅ Answer Input for Game 3 -->
+            <!--
+            <div class="mt-4">
+                <label for="answerInput" class="text-lg font-semibold">Enter Your Answer:</label>
+                <input type="text" id="answerInput" class="bg-gray-600 text-white px-4 py-2 rounded mt-2 w-full text-center">
+            </div>
+            -->
+
+            <!-- ✅ Submit & Quit Buttons -->
+            <div class="flex justify-center space-x-4 mt-4">
+                <button onclick="submitAnswer()" class="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded">Submit Answer</button>
+                <button onclick="quitGame()" class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">Quit & Show Results</button>
+            </div>
+
+            <p class="mt-4"><strong>Level:</strong> <span id="level" class="text-yellow-400 text-lg font-bold">1</span></p>
+            <p><strong>Score:</strong> <span id="score">0</span></p>
+            <p><strong>Attempts Left:</strong> <span id="attempts">5</span></p>
+
+            <p id="message" class="mt-4 text-lg"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let morseInput = "";
+            let attempts = 5;
+
+            // ✅ Fetch Username
+            fetch("/get-username")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.username) {
+                        document.getElementById("username").textContent = data.username;
+                    }
+                })
+                .catch(error => console.error("Error fetching username:", error));
+
+            // ✅ Fetch Game State
+            function fetchGameState() {
+                fetch("/api/game3-state")
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Game state:", data);
+                        document.getElementById("level").textContent = data.level ?? "1";
+                        document.getElementById("score").textContent = data.score ?? "0";
+                        document.getElementById("attempts").textContent = data.attempts ?? "5";
+                        document.getElementById("hint").textContent = data.hint ?? "No hint available";
+                        attempts = data.attempts;
+                        checkGameOver();
+                    })
+                    .catch(error => console.error("Error fetching game state:", error));
+            }
+            fetchGameState();
+
+            // ✅ Check if Game Over
+            function checkGameOver() {
+                if (attempts <= 0) {
+                    document.getElementById("message").textContent = "Game Over! No attempts left.";
+                    document.getElementById("morseInputDisplay").textContent = "GAME OVER";
+                }
+            }
+
+            // ✅ Submit Answer
+            window.submitAnswer = function () {
+                let userAnswer = document.getElementById("answerInput").value;
+                fetch("/api/game3-submit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: document.getElementById("username").textContent, answer: userAnswer })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === "correct") {
+                        alert("Correct! Score: " + data.new_score);
+                    } else {
+                        alert("Incorrect! Attempts left: " + data.attempts);
+                    }
+                    fetchGameState();
+                })
+                .catch(error => console.error("Error:", error));
+            };
+
+            // ✅ Morse Input
+            window.addMorse = function (symbol) {
+                if (attempts > 0) {
+                    morseInput += symbol;
+                    document.getElementById("morseInputDisplay").textContent = morseInput;
+                }
+            };
+
+            window.clearMorse = function () {
+                if (attempts > 0) {
+                    morseInput = "";
+                    document.getElementById("morseInputDisplay").textContent = "---";
+                }
+            };
+
+            // ✅ Quit Game
+            window.quitGame = function () {
+                fetch("/save-game3-progress", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: document.getElementById("username").textContent, score: document.getElementById("score").textContent })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "result.html";
+                    } else {
+                        alert("Error saving progress: " + data.error);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            };
+        });
+    </script>
+</body>
+</html>
