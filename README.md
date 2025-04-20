@@ -96,6 +96,7 @@ Download the MicroPython firmware for ESP8266 from [MicroPython ESP8266 Firmware
 ---
 
 ### Recommended Software: Thonny IDE
+
 ---
 
 For easy development and uploading scripts to both ESP32 and ESP8266, it's recommended to use **Thonny** IDE. Thonny is a beginner-friendly Python IDE that works well with MicroPython and supports both ESP32 and ESP8266 boards.
@@ -113,7 +114,6 @@ For easy development and uploading scripts to both ESP32 and ESP8266, it's recom
 3. **Uploading Scripts**:  
    Once Thonny is set up, you can upload your scripts to the ESP32/ESP8266 by selecting **File** > **Save As** and choosing the device as the save location.
 
-Thonny makes it easier to interact with the MicroPython REPL and upload scripts directly to your board without the need for additional terminal commands.
 ---
 
 ##  How to Run
